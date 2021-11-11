@@ -10,6 +10,18 @@ def get_settings() -> None:
 def update_settings() -> None:
     pass
 
+# Get user input for a menu and return the selected number between the 2 parameters.
+def get_menu_user_input(start_num, end_num) -> int:
+    inp = start_num-1
+    while inp < start_num or inp > end_num:
+        try:
+            inp = int(input("Number of button/setting: "))
+            if inp < start_num or inp > end_num:
+                raise Exception()
+        except:
+            print("Please give a valid input!\n")
+    return inp
+
 # Settings page functions
 # Difficulty levels: Easy - 0 Normal - 1 Hard - 2
 # Easy maximum word length: 5
@@ -46,21 +58,13 @@ def main_menu_page() -> None:
         print("--Welcome to the hangman console game!--")
         print("Created by: Noel Nagy")
         print("\n-Main menu-")
-        print("Type the number of the button that you'd like to select!")
+        print("\nType the number of the button that you'd like to select!")
         print("1 Play Game")
         print("2 Statistics")
         print("3 Settings")
         print("4 Exit\n")
         
-        # Take input until it is correct
-        inp = 0
-        while inp < 1 or inp > 5:
-            try:
-                inp = int(input("Select button: "))
-                if inp < 1 or inp > 4:
-                    raise Exception()
-            except:
-                print("Please give a valid input!\n")
+        inp = get_menu_user_input(1,4)
         # Handle input
         if inp == 1:
             start_game()
