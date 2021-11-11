@@ -41,7 +41,35 @@ def settings_page() -> None:
 
 # Main menu
 def main_menu_page() -> None:
-    pass
+    # This is the main loop for the game. If this ends the script will stop running.
+    while True:
+        print("--Welcome to the hangman console game!--")
+        print("Created by: Noel Nagy")
+        print("\n-Main menu-")
+        print("Type the number of the button that you'd like to select!")
+        print("1 Play Game")
+        print("2 Statistics")
+        print("3 Settings")
+        print("4 Exit\n")
+        
+        # Take input until it is correct
+        inp = 0
+        while inp < 1 or inp > 5:
+            try:
+                inp = int(input("Select button: "))
+                if inp < 1 or inp > 4:
+                    raise Exception()
+            except:
+                print("Please give a valid input!\n")
+        # Handle input
+        if inp == 1:
+            start_game()
+        elif inp == 2:
+            stats_page()
+        elif inp == 3:
+            settings_page()
+        elif inp == 4:
+            exit()
 
 if __name__ == "__main__":
     main_menu_page()
