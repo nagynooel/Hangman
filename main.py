@@ -6,12 +6,14 @@ import configparser
 import os.path
 
 # -- Global variables
+is_first_start: bool
+username: str
 difficulty: int
 max_tries: int
 wordlist: str
 
 # These are the settings used if the game is unable to load in/create the settings.ini file.
-default_settings: list[str:str] = {"difficulty":"0", "max_tries":"5" ,"wordlist_path":".\\", "wordlist_filename":"wordlist.txt"}
+default_settings: list[str:str] = {"is_first_start":"1", "username":"guest","difficulty":"0", "max_tries":"5" ,"wordlist_path":".\\", "wordlist_filename":"wordlist.txt"}
 
 # -- Functions
 # Read settings file if exsists, otherwise create default config file.
@@ -24,16 +26,22 @@ def get_settings() -> None:
         with open('settings.ini', 'w') as configfile:
             config.write(configfile)
     
+    global is_first_start
+    global username
     global difficulty
     global max_tries
     global wordlist
     try:
+        is_first_start = bool(int(config["MAIN"]["is_first_start"]))
+        username = config["MAIN"]["username"]
         difficulty = int(config["MAIN"]["difficulty"])
         max_tries = int(config["MAIN"]["max_tries"])
         wordlist = config["MAIN"]["wordlist_path"] + config["MAIN"]["wordlist_filename"]
     except:
-        # If an error occoures while reading the settings.ini it will use the default settings.
+        # If an error occoures while reading the settings.ini revert tu default settings.
         print("Error loading in settings! Reverting to default settings. Please check the integrity of the settings.ini and try again. If nothing else works delete the settings.ini file and reload script.")
+        is_first_start = bool(int(default_settings["is_first_start"]))
+        username = default_settings["username"]
         difficulty = default_settings["difficulty"]
         max_tries = default_settings["max_tries"]
         wordlist = default_settings["wordlist_path"] + default_settings["wordlist_filename"]
@@ -41,6 +49,8 @@ def get_settings() -> None:
 # Update the values of the settings in settings.ini
 def update_settings() -> None:
     try:
+        config["MAIN"]["is_first_start"] = str(int(is_first_start))
+        config["MAIN"]["username"] = username
         config["MAIN"]["difficulty"] = str(difficulty)
         config["MAIN"]["max_tries"] = str(max_tries)
         config["MAIN"]["wordlist_path"] = os.path.split(wordlist)[0]
