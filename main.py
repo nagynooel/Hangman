@@ -23,6 +23,10 @@ def get_settings() -> None:
         config["MAIN"] = default_settings
         with open('settings.ini', 'w') as configfile:
             config.write(configfile)
+    
+    global difficulty
+    global max_tries
+    global wordlist
     try:
         difficulty = int(config["MAIN"]["difficulty"])
         max_tries = int(config["MAIN"]["max_tries"])
