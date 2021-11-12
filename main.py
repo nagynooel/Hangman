@@ -104,6 +104,26 @@ def settings_page() -> None:
 
 # Main menu
 def main_menu_page() -> None:
+    # If this is the user's first time playing the game, ask for a username
+    global is_first_start
+    if is_first_start:
+        global username
+        print("--Welcome to the hangman console game!--")
+        print("Created by: Noel Nagy")
+        print("\nWe see that you are new to this game(or reseted the settings)! Please enter your name to get started!\n")
+        inp = ""
+        while inp == "" or inp == " ":
+            try:
+                inp = input("My name is: ")
+                if inp == "" or inp == " ":
+                    raise Exception()
+            except:
+                print("Your name can't be blank!\n")
+        username = inp
+        is_first_start = False
+        print(f"\nHey {username}! If you enjoy the game please leave a revive on my github page! Have fun! https://github.com/nagynooel/Hangman\n")
+        update_settings()
+
     # This is the main loop for the game. If this ends the script will stop running.
     while True:
         print("--Welcome to the hangman console game!--")
