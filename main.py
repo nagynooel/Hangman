@@ -2,10 +2,37 @@
 # Created by: Noel Nagy
 # Website: https://github.com/nagynooel
 
+import configparser
+import os.path
+
+# -- Global variables
+difficulty: int
+max_tries: int
+wordlist: str
+
+# These are the settings used if the game is unable to load in/create the settings.ini file.
+default_settings: list[str:str] = {"difficulty":"0", "max_tries":"5" ,"wordlist_path":".\\", "wordlist_filename":"wordlist.txt"}
+
 # -- Functions
 # Read settings file if exsists, otherwise create default config file.
+config = configparser.ConfigParser()
+config.read("settings.ini")
 def get_settings() -> None:
-    pass
+    # If settings.ini doesn't exist, make new one with default settings!
+    if not os.path.isfile(".\settings.ini"):
+        config["MAIN"] = default_settings
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
+    try:
+        difficulty = int(config["MAIN"]["difficulty"])
+        max_tries = int(config["MAIN"]["max_tries"])
+        wordlist = config["MAIN"]["wordlist_path"] + config["MAIN"]["wordlist_filename"]
+    except:
+        # If an error occoures while reading the settings.ini it will use the default settings.
+        print("Error loading in settings! Reverting to default settings. Please check the integrity of the settings.ini and try again. If nothing else works delete the settings.ini file and reload script.")
+        difficulty = default_settings["difficulty"]
+        max_tries = default_settings["max_tries"]
+        wordlist = default_settings["wordlist_path"] + default_settings["wordlist_filename"]
 
 def update_settings() -> None:
     pass
@@ -76,4 +103,5 @@ def main_menu_page() -> None:
             exit()
 
 if __name__ == "__main__":
+    get_settings()
     main_menu_page()
