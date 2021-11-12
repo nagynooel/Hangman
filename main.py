@@ -38,8 +38,18 @@ def get_settings() -> None:
         max_tries = default_settings["max_tries"]
         wordlist = default_settings["wordlist_path"] + default_settings["wordlist_filename"]
 
+# Update the values of the settings in settings.ini
 def update_settings() -> None:
-    pass
+    try:
+        config["MAIN"]["difficulty"] = str(difficulty)
+        config["MAIN"]["max_tries"] = str(max_tries)
+        config["MAIN"]["wordlist_path"] = os.path.split(wordlist)[0]
+        config["MAIN"]["wordlist_filename"] = os.path.split(wordlist)[1]
+        with open('settings.ini', 'w') as configfile:
+                config.write(configfile)
+    except:
+        print("FAILED to update settings in the settings.ini file.")
+        get_settings()
 
 # Get user input for a menu and return the selected number between the 2 parameters.
 def get_menu_user_input(start_num, end_num) -> int:
