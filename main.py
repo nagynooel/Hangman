@@ -123,15 +123,8 @@ def main_menu_page() -> None:
         global username
         print("--Welcome to the hangman console game!--")
         print("Created by: Noel Nagy")
-        print("\nWe see that you are new to this game(or reseted the settings)! Please enter your name to get started!\n")
-        inp = ""
-        while inp == "" or inp == " ":
-            try:
-                inp = input("My name is: ")
-                if inp == "" or inp == " ":
-                    raise Exception()
-            except:
-                print("Your name can't be blank!\n")
+        print("\nWe see that you are new to this game(or reseted the settings)! Please enter your name to get started!")
+        inp = get_string_user_input("Username: ", False, "Your name can't be blank! Please input a valid username.", [])
         username = inp
         is_first_start = False
         print(f"\nHey {username}! If you enjoy the game please leave a revive on my github page! Have fun! https://github.com/nagynooel/Hangman\n")
