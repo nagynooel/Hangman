@@ -4,6 +4,7 @@
 
 import configparser
 import os.path
+import random
 
 # -- Global variables
 is_first_start: bool
@@ -11,6 +12,10 @@ username: str
 difficulty: int
 max_tries: int
 wordlist: str
+
+# Maximum length of the words by difficulty. Hard has no limit. 
+easy_length: int = 5
+medium_length: int = 10
 
 # These are the settings used if the game is unable to load in/create the settings.ini file.
 default_settings: list[str:str] = {"is_first_start":"1", "username":"guest","difficulty":"0", "max_tries":"5" ,"wordlist_path":".\\", "wordlist_filename":"wordlist.txt"}
@@ -107,7 +112,62 @@ def remove_word(word: str) -> None:
 
 # -- Pages
 def start_game() -> None:
-    pass
+    # Select the word based on difficulty
+    file = open(wordlist, "r")
+    words = file.readlines()
+    word: str = words[random.randint(0, len(words)-1)][:-1]
+    if difficulty == 0:
+        while len(word) > easy_length:
+            word = words[random.randint(0, len(words)-1)][:-1]
+    elif difficulty == 1:
+        while len(word) > medium_length or len(word) <= easy_length:
+            word = words[random.randint(0, len(words)-1)][:-1]
+    else:
+        while len(word) <= medium_length:
+            word = words[random.randint(0, len(words)-1)][:-1]
+    # Establish basic variables
+    word_length: int = len(word)
+    tries: int = max_tries
+    guessed: str = ""
+    for _ in range(word_length):
+        guessed += "_"
+    # Start the game
+    print("\n\n-Game started-")
+    print(f"Length of the word: {word_length}")
+    print(f"Good luck {username}!")
+    # Main game loop
+    while guessed != word and tries > 0:
+        print(f"\nNumber of tries left: {tries}\n")
+        # Print out the current state of the game with spaces between letters
+        for guessed_letter in guessed:
+            print(guessed_letter, end=" ")
+        print("\n")
+        guess: str = get_string_user_input()
+        # Check that the guessed letter is in the word and that the letter haven't been guessed yet
+        if guess in word and guess not in guessed:
+            number_of_occurrence: int = 0
+            for ind, let in enumerate(word):
+                if let == guess:
+                    guessed = guessed[:ind] + let + guessed[ind+1:]
+                    number_of_occurrence += 1
+            if number_of_occurrence == 1:
+                print(f"\n\n\nThe letter {guess} appers 1 time in the word!")
+            else:
+                print(f"\n\n\nThe letter {guess} appers {number_of_occurrence} time(s) in the word!")
+        elif guess in word and guess in guessed:
+            print(f"\n\n\nU already found the letter {guess}!")
+        else:
+            tries -= 1
+            print(f"\n\n\nThe letter {guess} is not in the word!")
+    # Decide the outcome of the game
+    if guessed == word:
+        print(f"\nCongratulations! You found the word \"{word}\"")
+        print(f"You had {tries} tries left!")
+    else:
+        print(f"\nYou ran out of tries! The word was \"{word}\"")
+    inp = get_string_user_input("Would you like to play the game again? (y/n)", True, "Please enter \"y\" or \"n\" only!", ["y","n"])
+    if inp == "y":
+        start_game()
 
 def stats_page() -> None:
     pass
@@ -121,7 +181,7 @@ def main_menu_page() -> None:
     global is_first_start
     if is_first_start:
         global username
-        print("--Welcome to the hangman console game!--")
+        print("\n\n--Welcome to the hangman console game!--")
         print("Created by: Noel Nagy")
         print("\nWe see that you are new to this game(or reseted the settings)! Please enter your name to get started!")
         inp = get_string_user_input("Username: ", False, "Your name can't be blank! Please input a valid username.", [])
@@ -132,7 +192,7 @@ def main_menu_page() -> None:
 
     # This is the main loop for the game. If this ends the script will stop running.
     while True:
-        print("--Welcome to the hangman console game!--")
+        print("\n\n--Welcome to the hangman console game!--")
         print("Created by: Noel Nagy")
         print("\n-Main menu-")
         print("\nType the number of the button that you'd like to select!")
