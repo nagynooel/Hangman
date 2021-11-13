@@ -73,6 +73,19 @@ def get_menu_user_input(start_num, end_num) -> int:
             print("Please give a valid input!\n")
     return inp
 
+# Get a string type input from the user until it is not empty and input is in the available options list(if list is not empty).
+def get_string_user_input(input_text: str = "Letter: ", check_if_more_chars: bool = True, error_msg: str = "Input needs to be only 1 letter!", available_options: list[str] = []) -> str:
+    inp = ""
+    while inp == "" or inp == " ":
+        try:
+            inp = input("\n" + input_text)
+            if (check_if_more_chars and len(inp) > 1) or inp == "" or inp == " " or (len(available_options) != 0 and inp not in available_options):
+                inp = ""
+                raise Exception()
+        except:
+            print(error_msg)
+    return inp
+
 # Settings page functions
 # Difficulty levels: Easy - 0 Normal - 1 Hard - 2
 # Easy maximum word length: 5
