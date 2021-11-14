@@ -18,7 +18,7 @@ easy_length: int = 5
 medium_length: int = 10
 
 # These are the settings used if the game is unable to load in/create the settings.ini file.
-default_settings: list[str:str] = {"is_first_start":"1", "username":"guest","difficulty":"0", "max_tries":"5" ,"wordlist_path":".\\", "wordlist_filename":"wordlist.txt"}
+default_settings: list[str:str] = {"is_first_start":"1", "username":"guest","difficulty":"0", "max_tries":"5" ,"wordlist":".\wordlist.txt"}
 
 # -- Functions
 # Read settings file if exsists, otherwise create default config file.
@@ -41,7 +41,7 @@ def get_settings() -> None:
         username = config["MAIN"]["username"]
         difficulty = int(config["MAIN"]["difficulty"])
         max_tries = int(config["MAIN"]["max_tries"])
-        wordlist = config["MAIN"]["wordlist_path"] + config["MAIN"]["wordlist_filename"]
+        wordlist = config["MAIN"]["wordlist"]
     except:
         # If an error occoures while reading the settings.ini revert tu default settings.
         print("Error loading in settings! Reverting to default settings. Please check the integrity of the settings.ini and try again. If nothing else works delete the settings.ini file and reload script.")
@@ -49,7 +49,7 @@ def get_settings() -> None:
         username = default_settings["username"]
         difficulty = default_settings["difficulty"]
         max_tries = default_settings["max_tries"]
-        wordlist = default_settings["wordlist_path"] + default_settings["wordlist_filename"]
+        wordlist = default_settings["wordlist"]
 
 # Update the values of the settings in settings.ini
 def update_settings() -> None:
@@ -58,8 +58,7 @@ def update_settings() -> None:
         config["MAIN"]["username"] = username
         config["MAIN"]["difficulty"] = str(difficulty)
         config["MAIN"]["max_tries"] = str(max_tries)
-        config["MAIN"]["wordlist_path"] = os.path.split(wordlist)[0]
-        config["MAIN"]["wordlist_filename"] = os.path.split(wordlist)[1]
+        config["MAIN"]["wordlist"] = wordlist
         with open('settings.ini', 'w') as configfile:
                 config.write(configfile)
     except:
