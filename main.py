@@ -5,6 +5,7 @@
 import configparser
 import os.path
 import random
+import webbrowser
 
 # -- Global variables
 is_first_start: bool
@@ -199,7 +200,47 @@ def set_new_username() -> None:
 
 # Modifiy wordlist file
 def modify_wordlist() -> None:
-    pass
+    global wordlist
+    print("\n\n-Select new wordlist-")
+    print("Please input below the filename, esxtension and path of your own wordlist in this format: path/filenam.extension (example: C:\Documents\wordlist.txt)")
+    print("Relative paths can also be used. (example: .\wordlist.txt)")
+    print("Your wordlist should ideally be a txt file. Other types of files may work too.")
+    print("If you'd like to set the wordlist to the default one please input \"reset\".")
+    print("If you don't want to change the current list input \"back\"")
+    print(f"Current wordlist: {wordlist}")
+    # Main loop for input
+    does_wordlist_file_exist = False
+    while does_wordlist_file_exist == False:
+        inp = get_string_user_input("New wordlist: ", False, "Please input a valid wordlist as described above.", [])
+        try:
+            # Reset wordlist
+            if inp == "reset":
+                if os.path.isfile(default_settings["wordlist"]):
+                    wordlist = default_settings["wordlist"]
+                    update_settings()
+                    does_wordlist_file_exist = True
+                else:
+                    # If it doesn't exist throw an error
+                    print("The default wordlist CAN NOT be found.")
+                    raise Exception()
+            # Try to set custom wordlist
+            elif inp != "back":
+                if os.path.isfile(inp):
+                    wordlist = inp
+                    update_settings()
+                    does_wordlist_file_exist = True
+                else:
+                    # If it doesn't exist throw an error
+                    print("The wordlist, that you entered CAN NOT be found.")
+                    raise Exception()
+            else:
+                does_wordlist_file_exist = True
+        except:
+            print("Please enter a new wordlist or download the default list from this url: https://github.com/nagynooel/Hangman/blob/master/wordlist.txt")
+            # Open the link to download the original wordlist if input is "y"
+            inp = get_string_user_input("Would you like to open the above url? (y/n) ", False, "Please enter \"y\" or \"n\" only!", ["y","n"]) 
+            if inp == "y":
+                webbrowser.open("https://github.com/nagynooel/Hangman/blob/master/wordlist.txt", new=0, autoraise=True)
 
 # Add/Remove word to/from wordlist
 def add_word(word: str) -> None:
