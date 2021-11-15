@@ -161,7 +161,17 @@ def stats_page() -> None:
 # Normal maximum word length: 10
 # Hard maximum word length: no limit
 def select_difficulty() -> None:
-    pass
+    global difficulty
+    print("\n\n-Select difficulty-")
+    print("Type the number of the difficulty!")
+    print("1 Easy - maximum word length: 5")
+    print("2 Normal - maximum word length: 10")
+    print("3 Hard - maximum word length: no limit")
+    print("\n4 Back to general settings\n")
+    inp = get_menu_user_input(0,4)
+    if inp != 4:
+        difficulty = inp-1
+        update_settings()
 
 def select_max_tries():
     pass
@@ -194,7 +204,7 @@ def settings_page() -> None:
         print("5 Add word to wordlist")
         print("6 Remove word from wordlist")
         print("\n7 Reset settings")
-        print("\n8 Back to main menu")
+        print("\n8 Back to main menu\n")
         inp = get_menu_user_input(1,8)
         # Handle input
         if inp == 1:
