@@ -188,7 +188,14 @@ def select_max_tries() -> None:
         update_settings()
 
 def set_new_username() -> None:
-    pass
+    global username
+    print("\n\n-Change username-")
+    print("Please type in below your new desired username. If you don't want to change your current username please enter the number 0 as an input.")
+    print(f"Current username: {username}")
+    inp = get_string_user_input("New username: ", False, "Your name can't be blank! Please input a valid username.", [])
+    if inp != "0":
+        username = inp
+        update_settings()
 
 # Modifiy wordlist file
 def modify_wordlist() -> None:
