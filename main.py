@@ -173,8 +173,19 @@ def select_difficulty() -> None:
         difficulty = inp-1
         update_settings()
 
-def select_max_tries():
-    pass
+# Select the number of maximum tries for a game.
+def select_max_tries() -> None:
+    global max_tries
+    print("\n\n-Select max tries-")
+    print("Type in the number of tries you'd like to have to guess the word.")
+    print("Minimum number of tries: 1")
+    print("Maximum number of tries: 100")
+    print(f"Current number of tires: {max_tries}")
+    print("\n0 Back to general settings\n")
+    inp = get_menu_user_input(0,100)
+    if inp != 0:
+        max_tries = inp
+        update_settings()
 
 def set_new_username() -> None:
     pass
