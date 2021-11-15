@@ -65,6 +65,9 @@ def update_settings() -> None:
         print("FAILED to update settings in the settings.ini file.")
         get_settings()
 
+def reset_settings() -> None:
+    pass
+
 # Get user input for a menu and return the selected number between the 2 parameters.
 def get_menu_user_input(start_num, end_num) -> int:
     inp = start_num-1
@@ -89,25 +92,6 @@ def get_string_user_input(input_text: str = "Letter: ", check_if_more_chars: boo
         except:
             print(error_msg)
     return inp
-
-# Settings page functions
-# Difficulty levels: Easy - 0 Normal - 1 Hard - 2
-# Easy maximum word length: 5
-# Normal maximum word length: 10
-# Hard maximum word length: no limit
-def set_difficulty(difficulty: int) -> None:
-    pass
-
-# Modifiy wordlist file
-def modify_wordlist(new_wordlist_name: str) -> None:
-    pass
-
-# Add/Remove word to/from wordlist
-def add_word(word: str) -> None:
-    pass
-
-def remove_word(word: str) -> None:
-    pass
 
 # -- Pages
 def start_game() -> None:
@@ -171,8 +155,64 @@ def start_game() -> None:
 def stats_page() -> None:
     pass
 
-def settings_page() -> None:
+# Settings pages
+# Difficulty levels: Easy - 0 Normal - 1 Hard - 2
+# Easy maximum word length: 5
+# Normal maximum word length: 10
+# Hard maximum word length: no limit
+def select_difficulty() -> None:
     pass
+
+def select_max_tries():
+    pass
+
+def set_new_username() -> None:
+    pass
+
+# Modifiy wordlist file
+def modify_wordlist() -> None:
+    pass
+
+# Add/Remove word to/from wordlist
+def add_word(word: str) -> None:
+    pass
+
+def remove_word(word: str) -> None:
+    pass
+
+def settings_page() -> None:
+    run_settings_page: bool = True
+    while run_settings_page:
+        print("\n\n-Settings-")
+        print("Type the number of the setting/button, that you'd like to change!")
+        print("\nGeneral settings:")
+        print("1 Difficulty:", "Easy" if difficulty == 0 else "Normal" if difficulty == 1 else "Hard")
+        print(f"2 Number of maximum tries: {max_tries}")
+        print(f"3 Username: {username}")
+        print("\nWordlist related:")
+        print(f"4 Current wordlist: {wordlist}")
+        print("5 Add word to wordlist")
+        print("6 Remove word from wordlist")
+        print("\n7 Reset settings")
+        print("\n8 Back to main menu")
+        inp = get_menu_user_input(1,7)
+        # Handle input
+        if inp == 1:
+            select_difficulty()
+        elif inp == 2:
+            select_max_tries()
+        elif inp == 3:
+            set_new_username()
+        elif inp == 4:
+            modify_wordlist()
+        elif inp == 5:
+            add_word()
+        elif inp == 6:
+            remove_word()
+        elif inp == 7:
+            reset_settings()
+        elif inp == 8:
+            run_settings_page = False
 
 # Main menu
 def main_menu_page() -> None:
