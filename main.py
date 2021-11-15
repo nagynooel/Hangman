@@ -195,7 +195,7 @@ def settings_page() -> None:
         print("6 Remove word from wordlist")
         print("\n7 Reset settings")
         print("\n8 Back to main menu")
-        inp = get_menu_user_input(1,7)
+        inp = get_menu_user_input(1,8)
         # Handle input
         if inp == 1:
             select_difficulty()
