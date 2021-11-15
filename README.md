@@ -14,6 +14,6 @@ Used languages/file types:
 * python 3.9.8
    * This is the base language used to program the game. There is also a script included that sorts the wordlist and gives a few statistics back from it.
 * txt
-   * The wordlist is a txt file which you can edit really easy. I am also planning a feature to the game, where you cen add and remove words from the console and change the base list.
+   * The wordlist is a txt file which you can edit really easily. I am also planning a feature to the game, where you can add and remove words from the console and change the base list.
 * ini
-   * There is a settings.ini file included wich will hold the most basic settings to the game. I'm planning on using the [configparser](https://docs.python.org/3/library/configparser.html "Configparser documentation") module to edit and read the settings file.
+   * There is a settings.ini file included which will hold the most basic settings to the game. I'm planning on using the [configparser](https://docs.python.org/3/library/configparser.html "Configparser documentation") module to edit and read the settings file.
