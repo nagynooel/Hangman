@@ -243,8 +243,29 @@ def modify_wordlist() -> None:
                 webbrowser.open("https://github.com/nagynooel/Hangman/blob/master/wordlist.txt", new=0, autoraise=True)
 
 # Add/Remove word to/from wordlist
-def add_word(word: str) -> None:
-    pass
+def add_word() -> None:
+    print("\n\n-Add word into current wordlist-")
+    print("Please type in below the new word that you'd like to add to the wordlist. You can enter them one by one or you can even input a list of words seaprated with comas. Example: word1, word2, word3")
+    print("If you input (a) word(s) that are already inside the wordlist, it won't add it again.")
+    print("Your word can not contain any spaces at this time.")
+    print(f"Before you enter the words, please make sure that this is the wordlist you want to append: {wordlist}")
+    print("If you do not want to append your wordlist, type \"back\".")
+    inp = get_string_user_input("New word(s): ", False, "You can't leave this field blank!", [])
+    # Check if input is not "back"
+    if inp != "back":
+        # Read the file to know if words are in the wordlist already
+        with open(wordlist, "r") as file:
+            words_in_wordlist: str = file.readlines()
+        with open(wordlist, "a") as file:
+            new_words: list(str) = inp.replace(" ", "").split(",")
+            # This list will ensure that the program won't add the same word twice to the list from one input
+            newly_added_words: list(str) = []
+            for word in new_words:
+                if word + "\n" not in words_in_wordlist and word not in newly_added_words:
+                    file.write(word + "\r")
+                    newly_added_words.append(word)
+                else:
+                    print(f"\"{word}\" is already in the wordlist!")
 
 def remove_word(word: str) -> None:
     pass
