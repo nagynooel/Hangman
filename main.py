@@ -67,7 +67,17 @@ def update_settings() -> None:
         get_settings()
 
 def reset_settings() -> None:
-    pass
+    global is_first_start
+    global username
+    global difficulty
+    global max_tries
+    global wordlist
+    is_first_start = bool(int(default_settings["is_first_start"]))
+    username = default_settings["username"]
+    difficulty = default_settings["difficulty"]
+    max_tries = default_settings["max_tries"]
+    wordlist = default_settings["wordlist"]
+    update_settings()
 
 # Get user input for a menu and return the selected number between the 2 parameters.
 def get_menu_user_input(start_num, end_num) -> int:
