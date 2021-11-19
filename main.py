@@ -267,8 +267,36 @@ def add_word() -> None:
                 else:
                     print(f"\"{word}\" is already in the wordlist!")
 
-def remove_word(word: str) -> None:
-    pass
+def remove_word() -> None:
+    print("\n\n-Remove word from current wordlist-")
+    print("Please type in below the word(s) that you'd like to remove from the current wordlist. You can enter them one by one or you can even input a list of words seaprated with comas. Example: word1, word2, word3")
+    print("If you input (a) word(s) that do not exist in the wordlist, it will throw an error message.")
+    print(f"Before you enter the words, please make sure that this is the wordlist you want to remove from: {wordlist}")
+    print("If you do not want to remove words from your wordlist, type \"back\".")
+    inp = get_string_user_input("Remove words: ", False, "You can't leave this field blank!", [])
+     # Check if input is not "back"
+    if inp != "back":
+        # Read the wordlist file and get all of the words into a list
+        with open(wordlist, "r") as file:
+            words_in_wordlist: list(str) = file.readlines()
+        # Get the words inputted by the user into a list
+        words_to_remove: list(str) = inp.replace(" ", "").split(",")
+        # Remove words from the list and if word is not in the file
+        for word in words_to_remove:
+            if word + "\n" in words_in_wordlist:
+                words_in_wordlist.remove(word+"\n")
+            elif word in words_in_wordlist:
+                words_in_wordlist.remove(word)
+            else:
+                # Drop and error message
+                print(f"\"{word}\" is not in the current wordlist!")
+        # Wipe the file clean
+        file = open(wordlist, "w")
+        file.close()
+        # Write the new list of words into the file
+        with open(wordlist, "a") as file:
+            for word in words_in_wordlist:
+                file.write(word)
 
 def settings_page() -> None:
     run_settings_page: bool = True
