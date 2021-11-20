@@ -14,6 +14,16 @@ difficulty: int
 max_tries: int
 wordlist: str
 
+# - Global statistics variables
+# This is the file name and path for the statistics file
+stats_file_path_fname: str = "./stats.txt"
+games_played: int
+games_won: int
+high_score: int
+avrg_score: float
+avrg_tries_left: float
+
+
 # Maximum length of the words by difficulty. Hard has no limit. 
 easy_length: int = 5
 medium_length: int = 10
@@ -103,6 +113,56 @@ def get_string_user_input(input_text: str = "Letter: ", check_if_more_chars: boo
         except:
             print(error_msg)
     return inp
+
+# - Statistics functions
+# Update the statistics file or create it if it does not exist
+def update_stats():
+    with open(stats_file_path_fname, "w") as file:
+            file.write(f"games_played = {games_played}\n")
+            file.write(f"games_won = {games_won}\n")
+            file.write(f"high_score = {high_score}\n")
+            file.write(f"avrg_score = {avrg_score}\n")
+            file.write(f"avrg_tries_left = {avrg_tries_left}")
+
+# Read stats from statistics file
+def get_stats() -> None:
+    global games_played
+    global games_won
+    global high_score
+    global avrg_score
+    global avrg_tries_left
+
+    # If file does not exist, set default values and call the update method
+    if not os.path.isfile(stats_file_path_fname):
+        games_played = 0
+        games_won = 0
+        high_score = 0
+        avrg_score = 0.0
+        avrg_tries_left = 0.0
+        update_stats()
+
+    else:
+        # Read the file
+        with open(stats_file_path_fname, "r") as file:
+            current_stats = file.readlines()
+        
+        # Set variables based on the file
+        for stat in current_stats:
+            try:
+                stat = stat.replace(" ", "").replace("\n", "").split("=")
+                if stat[0] == "games_played":
+                    games_played = int(stat[1])
+                elif stat[0] == "games_won":
+                    games_won = int(stat[1])
+                elif stat[0] == "high_score":
+                    high_score = int(stat[1])
+                elif stat[0] == "avrg_score":
+                    avrg_score = float(stat[1])
+                elif stat[0] == "avrg_tries_left":
+                    avrg_tries_left = float(stat[1])
+            except Exception as e:
+                print(f"ERROR: There has been an error while trying to get your previous scores. Maybe your statistics file was corrupted. Please check the file. Every line after the '=' mark can only contain numbers! If you can't seem to find the problem reset the stats in the statistics menu or simply delete the {stats_file_path_fname} file.")
+                print(f"Error message: {e}")
 
 # -- Pages
 def start_game() -> None:
@@ -199,7 +259,7 @@ def start_game() -> None:
         start_game()
 
 def stats_page() -> None:
-    pass
+    get_stats()
 
 # Settings pages
 # Difficulty levels: Easy - 0 Normal - 1 Hard - 2
