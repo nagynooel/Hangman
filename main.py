@@ -124,6 +124,16 @@ def update_stats():
             file.write(f"avrg_score = {avrg_score}\n")
             file.write(f"avrg_tries_left = {avrg_tries_left}")
 
+def reset_stats():
+    global games_played, games_won, high_score, avrg_score, avrg_tries_left
+
+    games_played = 0
+    games_won = 0
+    high_score = 0
+    avrg_score = 0.0
+    avrg_tries_left = 0.0
+    update_stats()
+
 # Read stats from statistics file
 def get_stats() -> None:
     global games_played
@@ -134,13 +144,7 @@ def get_stats() -> None:
 
     # If file does not exist, set default values and call the update method
     if not os.path.isfile(stats_file_path_fname):
-        games_played = 0
-        games_won = 0
-        high_score = 0
-        avrg_score = 0.0
-        avrg_tries_left = 0.0
-        update_stats()
-
+        reset_stats()
     else:
         # Read the file
         with open(stats_file_path_fname, "r") as file:
@@ -293,6 +297,31 @@ def start_game() -> None:
 
 def stats_page() -> None:
     get_stats()
+    stats_loop: bool = True
+    while stats_loop:
+        print("\n\n--Statistics--")
+        print("Here are all your statistics of your played games and your current wordlist!")
+        print("\nGame stats:")
+        print(f"\nTotal games played: {games_played}")
+        print(f"Total games won: {games_won}")
+        print(f"Total games lost: {games_played - games_won}")
+        print(f"Win precentage: {round(games_won/games_played*100, 2) if games_won != 0 and games_played != 0 else 100}%")
+        print(f"Your highscore: {high_score}")
+        print(f"Average score: {round(avrg_score, 2)}")
+        print(f"Average tries left at the end: {round(avrg_tries_left, 2)}")
+
+        print("\nWordlist stats:")
+        import sort_list_and_get_statistics as wordlist_stats
+        wordlist_stats.sort_by_length(wordlist)
+        wordlist_stats.statistics(wordlist)
+
+        print("\nType:\n1 to reset statistics")
+        print("2 to go back to the main menu\n")
+        inp = get_menu_user_input(1,2)
+        if inp == 1:
+            reset_stats()
+        else:
+            stats_loop = False
 
 # Settings pages
 # Difficulty levels: Easy - 0 Normal - 1 Hard - 2

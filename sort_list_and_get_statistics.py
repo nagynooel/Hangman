@@ -36,7 +36,7 @@ def statistics(filename: str) -> None:
     min_length: int = len(lines[0])
     max_length: int = len(lines[len(lines)-1])
     print("\nNumber of words:", len(lines))
-    print("Average word length:", str(average_length))
+    print("Average word length:", str(round(average_length, 2)))
     print("Minimum word length:", str(min_length-1))
     print("Maximum word length:", str(max_length-1))
 
