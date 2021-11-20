@@ -119,47 +119,82 @@ def start_game() -> None:
     else:
         while len(word) <= medium_length:
             word = words[random.randint(0, len(words)-1)][:-1]
+    
     # Establish basic variables
     word_length: int = len(word)
     tries: int = max_tries
     guessed: str = ""
     for _ in range(word_length):
         guessed += "_"
+    
     # Start the game
     print("\n\n-Game started-")
     print(f"Length of the word: {word_length}")
     print(f"Good luck {username}!")
+
+    # Define score and streak counter
+    score: int = 0
+    streak: int = 0
+    # This variable is added to the streak in order to gain points according to the difficulty
+    gain_point_addition: int = 0 if difficulty == 0 else 1 if difficulty == 1 else 2
+    # This variable decides how much points does the user lose when an incorrect letter is guessed (based on difficulty)
+    lose_points: int = 1 if difficulty == 0 else 3 if difficulty == 1 else 5
+
     # Main game loop
     while guessed != word and tries > 0:
+
         print(f"\nNumber of tries left: {tries}\n")
         # Print out the current state of the game with spaces between letters
         for guessed_letter in guessed:
             print(guessed_letter, end=" ")
         print("\n")
         guess: str = get_string_user_input()
+
         # Check that the guessed letter is in the word and that the letter haven't been guessed yet
         if guess in word and guess not in guessed:
-            number_of_occurrence: int = 0
+
+            number_of_occurrences: int = 0
             for ind, let in enumerate(word):
                 if let == guess:
                     guessed = guessed[:ind] + let + guessed[ind+1:]
-                    number_of_occurrence += 1
-            if number_of_occurrence == 1:
+                    number_of_occurrences += 1
+            
+            # Decide score and print them out
+            streak += 1
+            # Formula to count score
+            gained_points: int = number_of_occurrences * (streak + gain_point_addition)
+            score += gained_points
+            if number_of_occurrences == 1:
                 print(f"\n\n\nThe letter {guess} appers 1 time in the word!")
             else:
-                print(f"\n\n\nThe letter {guess} appers {number_of_occurrence} time(s) in the word!")
+                print(f"\n\n\nThe letter {guess} appers {number_of_occurrences} times in the word!")
+            if gained_points == 1:
+                print(f"+1 point for guessing a letter. Your streak: {streak}")
+            else:
+                print(f"+{gained_points} points for guessing a letter. Your streak: {streak}")
+            print(f"Your current score: {score}")
+
+        # If the letter has already been guessed
         elif guess in word and guess in guessed:
             print(f"\n\n\nU already found the letter {guess}!")
+        # If guessed letter is not in the word
         else:
             tries -= 1
+            streak = 0
+            score -= lose_points
             print(f"\n\n\nThe letter {guess} is not in the word!")
+            print(f"-{lose_points} point for not guessing the correct letter")
+            print(f"Your current score: {score}")
+    
     # Decide the outcome of the game
     if guessed == word:
         print(f"\nCongratulations! You found the word \"{word}\"")
         print(f"You had {tries} tries left!")
+        print(f"Your final score: {score}")
     else:
         print(f"\nYou ran out of tries! The word was \"{word}\"")
-    inp = get_string_user_input("Would you like to play the game again? (y/n)", True, "Please enter \"y\" or \"n\" only!", ["y","n"])
+    
+    inp = get_string_user_input("Would you like to play the game again? (y/n) ", True, "Please enter \"y\" or \"n\" only!", ["y","n"])
     if inp == "y":
         start_game()
 
