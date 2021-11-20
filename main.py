@@ -164,6 +164,31 @@ def get_stats() -> None:
                 print(f"ERROR: There has been an error while trying to get your previous scores. Maybe your statistics file was corrupted. Please check the file. Every line after the '=' mark can only contain numbers! If you can't seem to find the problem reset the stats in the statistics menu or simply delete the {stats_file_path_fname} file.")
                 print(f"Error message: {e}")
 
+# After every game finished this function will save all statistics of the current game and return if the current score is a highscore(True or False)
+def save_stats(win: bool, current_score: int, current_tries_left: int) -> bool:
+    global games_played
+    global games_won
+    global avrg_score
+    global avrg_tries_left
+    global high_score
+
+    get_stats()
+
+    # Adjust the value of local stat variables
+    games_played += 1
+    if win:
+       games_won += 1
+    avrg_score = avrg_score + (current_score - avrg_score) / games_played
+    avrg_tries_left = avrg_tries_left + (current_tries_left - avrg_tries_left) / games_played
+
+    # Decide if current score is highscore or not
+    is_highscore = current_score >= high_score
+    if is_highscore:
+        high_score = current_score
+    
+    update_stats()
+    return is_highscore
+
 # -- Pages
 def start_game() -> None:
     # Select the word based on difficulty
@@ -247,13 +272,21 @@ def start_game() -> None:
             print(f"Your current score: {score}")
     
     # Decide the outcome of the game
-    if guessed == word:
+    win = guessed == word
+    if win:
         print(f"\nCongratulations! You found the word \"{word}\"")
         print(f"You had {tries} tries left!")
-        print(f"Your final score: {score}")
     else:
         print(f"\nYou ran out of tries! The word was \"{word}\"")
     
+    is_highscore = save_stats(win, score, tries)
+    if is_highscore:
+        print("\nCongratulations! This is your new highscore!")
+    print(f"\nYour final score: {score}")
+    print(f"Highscore: {high_score}")
+    print(f"Total games played: {games_played}")
+    print(f"Total games won: {games_won}")
+
     inp = get_string_user_input("Would you like to play the game again? (y/n) ", True, "Please enter \"y\" or \"n\" only!", ["y","n"])
     if inp == "y":
         start_game()
