@@ -17,3 +17,34 @@ Used languages/file types:
    * The wordlist is a txt file which you can edit really easily. I am also planning a feature to the game, where you can add and remove words from the console and change the base list.
 * ini
    * There is a settings.ini file included which will hold the most basic settings to the game. I'm planning on using the [configparser](https://docs.python.org/3/library/configparser.html "Configparser documentation") module to edit and read the settings file.
+
+## Scoring system:
+The scoring system is based on the selected difficulty. Listed below are the formulas and code implementations used to count them. The code implementation includes one line nested if/else functions for ease of use.
+#### Here are the keyes used in the formulas:
+* **number of occurences**: The number of times the guessed letter appers in the word. (Example: word: a**pp**le - letter: p - number of occurences: 2)
+* **streak**: The users current streak in guessing the word. The streak is by default 0 and is reseted after guessing a letter that is not in the word. After every successfull attempt the streak will be incremented by 1.
+### Formulas:
+**Easy difficulty (0):**  
+gaing points: **number of occurences * streak**  
+losing points: - 1  
+
+**Medium difficulty (1):**  
+gaing points: **number of occurances * (streak + 1)**  
+losing points: - 3
+
+**Hard difficulty (2):**  
+gaing points: **number of occurances * (streak + 2)**  
+losing points: - 5
+
+### Code implementations:
+gaining points:
+```python
+gain_point_addition: int = 0 if difficulty == 0 else 1 if difficulty == 1 else 2
+
+gained_points: int = number_of_occurrences * (streak + gain_point_addition)
+score += gained_points
+```
+losing points:
+```python
+lose_points: int = 1 if difficulty == 0 else 3 if difficulty == 1 else 5
+score -= lose_points
