@@ -1,7 +1,7 @@
 # Hangman
 Created by: [Noel Nagy](https://github.com/nagynooel "Noel's Github page")
 
-Date of creation: 11.11.2021 - 
+Date of creation: 11.11.2021 - 11.21.2021 (There may be bug fixes after this date!)
 
 Used license: [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html "GNU AGPLv3 License")
 ## Background of the project
